@@ -33,7 +33,8 @@ public class InventoryModel {
     LinkedList<Statement> allStatements = new LinkedList<Statement>();
 
     PreparedStatement psAddLaptop = null;
-
+    PreparedStatement psDelLaptop = null;
+    PreparedStatement psReassignLaptop = null;
 
     public InventoryModel(InventoryController controller) {
 
@@ -206,7 +207,42 @@ public class InventoryModel {
         }
     }
 
+    public boolean reassignLaptop(Laptop laptop, String newuser){
+        String deleteLaptop = "UPDATE laptops SET staff = (?) WHERE id = (?)";
+        try {
+            psReassignLaptop = conn.prepareStatement(deleteLaptop);
+            allStatements.add(psReassignLaptop);
+            psReassignLaptop.setString(1, newuser);
+            psReassignLaptop.setInt(2, laptop.id);
+            psReassignLaptop.execute();
+        }
+        catch (SQLException sqle) {
+            System.err.println("Error preparing statement or executing prepared statement to add laptop");
+            System.out.println(sqle.getErrorCode() + " " + sqle.getMessage());
+            sqle.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
+    public boolean deleteLaptop(Laptop laptop){
+        String deleteLaptop = "DELETE FROM laptops WHERE id = (?)";
+
+        try {
+
+            psDelLaptop = conn.prepareStatement(deleteLaptop);
+            allStatements.add(psDelLaptop);
+            psDelLaptop.setInt(1, laptop.id);
+            psDelLaptop.execute();
+        }
+        catch (SQLException sqle) {
+            System.err.println("Error preparing statement or executing prepared statement to add laptop");
+            System.out.println(sqle.getErrorCode() + " " + sqle.getMessage());
+            sqle.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
     public boolean addLaptop(Laptop laptop) {
 
@@ -220,7 +256,6 @@ public class InventoryModel {
             psAddLaptop.setString(1, laptop.getMake());
             psAddLaptop.setString(2, laptop.getModel());
             psAddLaptop.setString(3, laptop.getStaff());
-
             psAddLaptop.execute();
         }
         catch (SQLException sqle) {

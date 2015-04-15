@@ -1,5 +1,6 @@
 /** @author Clara MCTC Java Programming Class */
 
+import javax.swing.*;
 import java.util.LinkedList;
 
 public class InventoryController {
@@ -22,7 +23,7 @@ public class InventoryController {
 
             db = new InventoryModel(controller);
 
-            boolean setup = db.setupDatabase();
+            boolean setup = db.setupDatabase(true);
             if (setup == false) {
                 System.out.println("Error setting up database, see error messages. Clean up database connections.... Quitting program ");
 
@@ -58,8 +59,27 @@ public class InventoryController {
 
     }
 
-    public LinkedList<Laptop> requestAllInventory() {
+    public String requestReassignLaptop(Laptop l, String newuser){
+        boolean success = db.reassignLaptop(l, newuser);
+        if (success == true){
+            return null;
+        }
+        else{
+            return "Could not delete laptop";
+        }
+    }
 
+    public String requestDeleteLaptop(Laptop l){
+        boolean success = db.deleteLaptop(l);
+        if (success == true){
+            return null;
+        }
+        else{
+            return "Could not delete laptop";
+        }
+    }
+
+    public static LinkedList<Laptop> requestAllInventory() {
 
         LinkedList<Laptop> allLaptops = db.displayAllLaptops();
         if (allLaptops == null ) {

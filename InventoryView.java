@@ -21,7 +21,6 @@ public class InventoryView {
 
 
         while (true) {
-            searchByStaff();
             int userChoice = displayMenuGetUserChoice();
             if (userChoice == QUIT ) {
                 break;
@@ -366,10 +365,10 @@ public class InventoryView {
 
     //has the controller search by staff member.
     private void searchByStaff() {
-        /*System.out.println("Who would you like to search? ");
-        String user = s.nextLine();*/
+        System.out.println("Who would you like to search? ");
+        String user = s.nextLine();
 
-        String list = myController.requestStaffSearch("Alex");
+        String list = myController.requestStaffSearch(user);
         try{
             if(!list.equals(null)){
                 System.out.println(list);
@@ -387,7 +386,6 @@ public class InventoryView {
         int userChoice = -1;
 
         while (!inputOK) {
-
             System.out.println("1. View all inventory");
             System.out.println("2. Add a new laptop");
             System.out.println("3. Reassign a laptop to another staff member");

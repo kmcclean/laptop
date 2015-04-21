@@ -1,6 +1,5 @@
 /** @author Clara MCTC Java Programming Class */
 
-import javax.swing.*;
 import java.util.LinkedList;
 
 public class InventoryController {
@@ -45,8 +44,22 @@ public class InventoryController {
 
     }
 
-    public String requestAddLaptop(Laptop l) {
+    //this requests that the database add a cellphone.
+    public String requestAddCellphone(CellPhone c) {
+        //This message should arrive from the UI. Send a message to the db to request that this laptop is added.
+        //Return error message, if any. Return null if transaction was successful.
+        boolean success = db.addCellphone(c);
+        if (success == true ) {
+            return null;   //Null means all was well.
+        }
+        else {
+            return "Unable to add laptop to database";
+        }
 
+    }
+
+    //this requests that the database add a laptop.
+    public String requestAddLaptop(Laptop l) {
         //This message should arrive from the UI. Send a message to the db to request that this laptop is added.
         //Return error message, if any. Return null if transaction was successful.
         boolean success = db.addLaptop(l);
@@ -59,6 +72,18 @@ public class InventoryController {
 
     }
 
+    //this requests that the database reassign a specific cellphone.
+    public String requestReassignCellphone(CellPhone c, String newuser){
+        boolean success = db.reassignCellphone(c, newuser);
+        if (success == true){
+            return null;
+        }
+        else{
+            return "Could not delete laptop";
+        }
+    }
+
+    //this has the database reassign the chosen laptop.
     public String requestReassignLaptop(Laptop l, String newuser){
         boolean success = db.reassignLaptop(l, newuser);
         if (success == true){
@@ -69,6 +94,7 @@ public class InventoryController {
         }
     }
 
+    //this deletes the chosen laptop.
     public String requestDeleteLaptop(Laptop l){
         boolean success = db.deleteLaptop(l);
         if (success == true){
@@ -79,7 +105,31 @@ public class InventoryController {
         }
     }
 
-    public static LinkedList<Laptop> requestAllInventory() {
+    //this deletes the cellphone that is selected.
+    public String requestDeleteCellphone(CellPhone c){
+        boolean success = db.deleteCellphone(c);
+        if (success == true){
+            return null;
+        }
+        else{
+            return "Could not delete laptop";
+        }
+    }
+
+    //this hs the database send a specific request to look at the use by an individual user.
+    public static String requestStaffSearch(String user){
+        String items = db.staffSearch(user);
+        if (items.equals("")){
+            System.out.println("No cellphones or laptops have been assigned to this staff member.");
+            return null;
+        }
+        else {
+            return items;
+        }
+    }
+
+    //this has the database pull all the informatoin about laptops.
+    public static LinkedList<Laptop> requestAllLaptops() {
 
         LinkedList<Laptop> allLaptops = db.displayAllLaptops();
         if (allLaptops == null ) {
@@ -89,8 +139,19 @@ public class InventoryController {
         else {
             return allLaptops;
         }
+    }
 
+    //this has the database pull all the information about cellphones.
+    public static LinkedList<CellPhone> requestAllCellphones() {
 
+        LinkedList<CellPhone> cellPhones = db.displayAllCellphones();
+        if (cellPhones == null ) {
+            System.out.println("Controller detected error in fetching laptops from database");
+            return null;   //Null means error. View can deal with how to display error to user.
+        }
+        else {
+            return cellPhones;
+        }
     }
 
 }

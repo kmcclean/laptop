@@ -24,17 +24,17 @@ public class Laptop {
     }
 
 
-    protected String getMake() {
+    protected String getLapTopMake() {
         return make;
     }
 
 
-    protected String getModel() {
+    protected String getLapTopModel() {
         return model;
     }
 
 
-    protected String getStaff() {
+    protected String getLapTopStaff() {
         return staff;
     }
 
